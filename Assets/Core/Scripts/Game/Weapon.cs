@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Weapons : Items
+public abstract class Weapon : Item
 {
     float _damage;
     float _cooldown;

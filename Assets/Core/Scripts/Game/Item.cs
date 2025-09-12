@@ -1,8 +1,10 @@
 using UnityEngine;
 
-public abstract class Items : MonoBehaviour
+/// <summary>
+/// Anything you can store in your inventory
+/// </summary>
+public abstract class Item : MonoBehaviour
 {
-    int _quantity;
     Sprite _icon;
 
     string _name;
