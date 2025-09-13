@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour {
-    float _health;
-    float _damage;
-
-    public abstract float OnAttack();
+namespace Core.Scripts.Game
+{
+    public abstract class Enemy : Entity {
+        
+    }
 }
