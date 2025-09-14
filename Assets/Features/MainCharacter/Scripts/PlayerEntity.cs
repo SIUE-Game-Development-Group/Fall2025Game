@@ -54,7 +54,7 @@ public class PlayerEntity : Entity
         // Wait until not invincible anymore
         yield return new WaitForSeconds(hitInvincibilityTime);
             
-        // Make all hurtboxes not invincible aymore.
+        // Make all hurtboxes not invincible anymore.
         _hitInvincible = false;
         foreach (var hurtbox in _hurtboxes)
         {
