@@ -17,7 +17,7 @@ namespace Core.Scripts.Game
         /// </summary>
         protected abstract void Attack();
 
-        private void Start()
+        public virtual void Start()
         {
             _cooldownTimer = cooldown;
         }

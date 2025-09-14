@@ -33,7 +33,7 @@ namespace Core.Scripts.Game
         /// </summary>
         public event Action OnDeath;
 
-        public void Start() {
+        public virtual void Start() {
             _rb = GetComponent<Rigidbody2D>();
             _health = _maxHealth; // initialize hp to max hp
         }

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Core.Scripts.Game;
+using Core.Scripts.Input;
 
 public class PlayerEntity : Entity
 {
@@ -27,7 +28,7 @@ public class PlayerEntity : Entity
         OnDamaged -= OnPlayerDamaged;
         OnDeath -= OnPlayerDefeated;
     }
-
+    
     public void OnPlayerDamaged()
     {
         if (!_hitInvincible && hitInvincibilityTime > 0f)
