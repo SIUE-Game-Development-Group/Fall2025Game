@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public abstract class Accessory : Item
+namespace Core.Scripts.Game
 {
-    public abstract void Equip();
-    public abstract void Unequip();
+    public abstract class Accessory : Item
+    {
+        public abstract void Equip();
+        public abstract void Unequip();
+    }
 }

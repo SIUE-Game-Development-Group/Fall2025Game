@@ -1,19 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-/// <summary>
-/// Anything you can store in your inventory
-/// </summary>
-public abstract class Item : MonoBehaviour
+namespace Core.Scripts.Game
 {
-    Sprite _icon;
-
-    string _name;
-    string _description;
-
-    enum _rarity {
-        Common,
-        Uncommon,
-        Rare,
-        Legendary
+    public class Item : MonoBehaviour
+    {
+        enum Rarity {
+            Common,
+            Uncommon,
+            Rare,
+            Legendary
+        }
+        [SerializeField] private Rarity rarity;
+        [SerializeField] private string displayName;
+        [SerializeField] private string description;
+        [SerializeField] private Sprite icon;
     }
 }
