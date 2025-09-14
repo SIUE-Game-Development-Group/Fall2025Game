@@ -1,54 +1,60 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using Core.Scripts.Input;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public abstract class Entity : MonoBehaviour
+namespace Core.Scripts.Game
 {
-    [SerializeField] float _maxHealth = 10;
-    [SerializeField] float _speed = 5f;
-    [SerializeField] Rigidbody2D _rb;
-    [SerializeField] Hitbox _hb;
+    [RequireComponent(typeof(Rigidbody2D))]
+    public abstract class Entity : MonoBehaviour
+    {
+        [SerializeField] float _maxHealth = 10f;
+        [SerializeField] float _moveSpeed = 5f;
+    
+        Rigidbody2D _rb;
 
-    /// <summary>
-    /// current health
-    /// </summary>
-    float _health = 10;
+        /// <summary>
+        /// current health, set to max health when spawning
+        /// </summary>
+        float _health = 10;
 
-    /// <summary>
-    /// Last move direction that was requested
-    /// </summary>
-    Vector2 _move;
+        /// <summary>
+        /// Last move direction that was requested by Move()
+        /// </summary>
+        Vector2 _moveDirection = Vector2.zero;
+    
+        /// <summary>
+        /// Event invoked when this entity takes damage
+        /// </summary>
+        public event Action OnDamaged;
+    
+        /// <summary>
+        /// Evet invoked when this entity's health becomes 0 or lower
+        /// </summary>
+        public event Action OnDeath;
 
-    public void Die() {
+        public void Start() {
+            _rb = GetComponent<Rigidbody2D>();
+            _health = _maxHealth; // initialize hp to max hp
+        }
 
-    }
+        public void Update() {
+            _rb.linearVelocity = _moveDirection.normalized * _moveSpeed;
+        }
+    
+        public void Move(Vector2 move) {
+            _moveDirection = move.normalized;
+        }
 
-    public void Move(Vector2 move) {
-        _move = move;
-    }
-
-    public event Action OnDamaged;
-
-    public event Action OnDeath;
-
-    private int _currentHealth;
-
-    private void Awake() {
-        _health = _maxHealth;
-        _rb = GetComponent<Rigidbody2D>();
-    }
-
-    private void Update() {
-        _rb.linearVelocity = _move.normalized * _speed;
-    }
-
-    public virtual void TakeDamage(float amount) {
-        _health -= amount;
-        OnDamaged?.Invoke();
-        if (_currentHealth <= 0) {
-            _currentHealth = 0;
-            OnDeath?.Invoke();
+        public void TakeDamage(float amount) {
+            _health -= amount;
+            Debug.Log(gameObject.name + " damaged " + amount);
+            OnDamaged?.Invoke();
+            
+            if (_health <= 0) {
+                _health = 0;
+                OnDeath?.Invoke();
+            }
         }
     }
 }

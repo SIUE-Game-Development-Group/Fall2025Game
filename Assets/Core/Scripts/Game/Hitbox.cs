@@ -1,12 +1,32 @@
 using UnityEngine;
 
-public class Hitbox : MonoBehaviour
+namespace Core.Scripts.Game
 {
-    private Entity _entity;
+    /// <summary>
+    /// Deals damage to hurtboxes that collide with this.
+    /// Hitbox colliders should be triggers.
+    /// </summary>
+    [RequireComponent(typeof(Collider2D))]
+    public class Hitbox : MonoBehaviour
+    {
+        public float damage;
+        
+        public void OnTriggerEnter2D(Collider2D other) 
+        {
+            if (other.gameObject.TryGetComponent(out Hurtbox hurtbox))
+            {
+                // Will deal damage immediately if the hurtbox is not currently invincible.
+                // If it is currently invincible, will only deal damage when it loses invincibility and still contacting
+                hurtbox.HitboxEntered(this);
+            }
+        }
 
-    public void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.TryGetComponent<Hurtbox>(out Hurtbox hb)) {
-            _entity.TakeDamage(hb.damage);
+        public void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.gameObject.TryGetComponent(out Hurtbox hurtbox))
+            {
+                hurtbox.HitboxExited(this);
+            }
         }
     }
 }

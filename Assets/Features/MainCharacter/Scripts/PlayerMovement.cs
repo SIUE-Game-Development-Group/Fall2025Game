@@ -1,4 +1,5 @@
 ﻿using Core.Scripts.Input;
+using Core.Scripts.Game;
 using UnityEngine;
 
 namespace Features.MainCharacter.Scripts
