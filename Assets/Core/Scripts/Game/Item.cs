@@ -4,15 +4,22 @@ namespace Core.Scripts.Game
 {
     public class Item : MonoBehaviour
     {
-        enum Rarity {
+        Sprite _icon;
+
+        string _name;
+        string _description;
+
+        public enum Rarity {
             Common,
             Uncommon,
             Rare,
             Legendary
         }
-        [SerializeField] private Rarity rarity;
-        [SerializeField] private string displayName;
-        [SerializeField] private string description;
-        [SerializeField] private Sprite icon;
+        
+        [SerializeField] public string id;
+        [SerializeField] public string displayName;
+        [SerializeField] public string description;
+        [SerializeField] public Rarity rarity;
+        [SerializeField] public Sprite icon;
     }
 }
