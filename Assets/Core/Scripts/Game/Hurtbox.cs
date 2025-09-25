@@ -13,6 +13,7 @@ namespace Core.Scripts.Game
     public class Hurtbox : MonoBehaviour
     {
         [SerializeField] private Entity entity;
+        public Entity Entity => entity;
 
         /// <summary>
         /// Hitboxes this hurtbox is currently in contact with
@@ -37,7 +38,7 @@ namespace Core.Scripts.Game
 
         private void OnDisable()
         {
-            _contactingHitboxes.Clear();
+            // _contactingHitboxes.Clear();
         }
 
         public void StartInvincibility()
@@ -50,6 +51,8 @@ namespace Core.Scripts.Game
             _hittable = true;
             foreach (var hitbox in _contactingHitboxes)
             {
+                if (hitbox.entitiesHit.Contains(entity)) return;
+                hitbox.entitiesHit.Add(entity);
                 entity.TakeDamage(hitbox.damage);
                 
                 // If taking damage caused this hurtbox to be invincible again,

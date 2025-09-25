@@ -9,6 +9,7 @@ namespace Core.Scripts.Game
     public abstract class Weapon : Item
     {
         [SerializeField] private float cooldown;
+        [SerializeField] private Hitbox[] hitboxes;
         
         private float _cooldownTimer;
 
@@ -36,6 +37,8 @@ namespace Core.Scripts.Game
         {
             if (IsOnCooldown()) return;
             _cooldownTimer = cooldown;
+            foreach (var hitbox in hitboxes)
+                hitbox.ResetHit();
             Attack();
         }
     }

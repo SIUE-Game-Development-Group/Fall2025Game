@@ -9,10 +9,10 @@ namespace Features.Items.Scripts.Weapons
     {
         [SerializeField] private float attackDuration = 0.4f;
         [SerializeField] private GameObject hitbox;
-
-        public override void Start()
+        
+        
+        public void Start()
         {
-            base.Start();
             hitbox.SetActive(false);
         }
 
