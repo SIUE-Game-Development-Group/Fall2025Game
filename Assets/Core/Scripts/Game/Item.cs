@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public abstract class Item : MonoBehaviour
 {
+<<<<<<< Updated upstream
     Sprite _icon;
 
     string _name;
