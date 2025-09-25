@@ -72,7 +72,7 @@ public class ItemManager : MonoBehaviour
 
     public Item FindItemByName(string name, int mid)
     {
-        int result = String.Compare(name.ToLower(), allItems[mid].name.ToLower())
+        int result = String.Compare(name.ToLower(), allItems[mid].name.ToLower());
         if ( result < 0)
         {
             FindItemByName(name, mid + (mid/2));
@@ -80,9 +80,9 @@ public class ItemManager : MonoBehaviour
 
         if (result > 0)
         {
-            FindItemByName()
+            
         }
-        
+
+        return null;
     }
-    
 }

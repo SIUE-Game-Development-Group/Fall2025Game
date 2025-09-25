@@ -11,13 +11,12 @@ namespace Features.Items.Scripts.Weapons
         [SerializeField] private GameObject hitbox;
         
         
-        public override void Start()
+        public void Start()
         {
-            base.Start();
             hitbox.SetActive(false);
         }
 
-        protected override void Attack()
+        public override void Attack()
         {
             StartCoroutine(AttackCoroutine());
         }
@@ -25,8 +24,7 @@ namespace Features.Items.Scripts.Weapons
         public IEnumerator AttackCoroutine()
         {
             // Get direction to target
-            var mousePos = InputManager.Instance.MousePosition;
-            mousePos.z = 10f;
+            var mousePos = InputManager.Instance.MoveInput;
             var mousePosWorld = Camera.main.ScreenToWorldPoint(mousePos);
             mousePosWorld.z = 0;
             Vector2 direction = mousePosWorld - transform.position;
