@@ -17,10 +17,9 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Save()
     {
-
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(path, FileMode.Create);
-
+        
         formatter.Serialize(stream, ItemManager.inventory);
         stream.Close();
         Debug.Log("Game Saved!");

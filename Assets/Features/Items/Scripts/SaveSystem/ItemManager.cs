@@ -12,17 +12,18 @@ using Object = UnityEngine.Object;
 
 public class ItemManager : MonoBehaviour
 {
+    // What the player currently holds
+    
     public static List<Item> inventory;
 
 
-    public static List<Item> allItems = new List<Item>(); 
+    public static List<Item> AllItems = new List<Item>(); 
     
     private string targetDirectoryPath = "Assets/Resources/Weapons";
 
     public void Start()
     {
         inventory = new List<Item>();
-        //allItems = new List<Item>();
         
         
         //inventory.Add(new InventoryItem("Copper Sword", 1));
@@ -36,7 +37,7 @@ public class ItemManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(inventory[0].ToString());
+        
     }
     
     // Scan all files in weapon directory and set id = (weapons path)
@@ -58,31 +59,31 @@ public class ItemManager : MonoBehaviour
             
             item.id = targetDirectoryPath + "/"  + item.name;
 
-            allItems.Add(item);
+            AllItems.Add(item);
 
         }
     }
 
-    
-    
+
+    public void SwapItem()
+    {
+        
+    }
+
+
+
     public void RandomGenerateItem()
     {
-        inventory.Add(allItems[UnityEngine.Random.Range(0, allItems.Count-1)]);
+        inventory.Add(AllItems[UnityEngine.Random.Range(0, AllItems.Count-1)]);
     }
-
-    public Item FindItemByName(string name, int mid)
+    
+    // Returns item if found, else returns null
+    public Item FindItemByName(string itemName)
     {
-        int result = String.Compare(name.ToLower(), allItems[mid].name.ToLower());
-        if ( result < 0)
+        foreach (Item item in AllItems)
         {
-            FindItemByName(name, mid + (mid/2));
+            if (item.name == itemName) return item;
         }
-
-        if (result > 0)
-        {
-            
-        }
-
         return null;
     }
 }
