@@ -24,7 +24,8 @@ namespace Features.Items.Scripts.Weapons
         public IEnumerator AttackCoroutine()
         {
             // Get direction to target
-            var mousePos = InputManager.Instance.MoveInput;
+            var mousePos = InputManager.Instance.MousePosition;
+            mousePos.z = 10f;
             var mousePosWorld = Camera.main.ScreenToWorldPoint(mousePos);
             mousePosWorld.z = 0;
             Vector2 direction = mousePosWorld - transform.position;
