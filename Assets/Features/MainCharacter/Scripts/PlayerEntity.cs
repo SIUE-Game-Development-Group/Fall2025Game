@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Core.Scripts.Game;
+using Core.Scripts.Input;
 
 public class PlayerEntity : Entity
 {
@@ -27,7 +28,7 @@ public class PlayerEntity : Entity
         OnDamaged -= OnPlayerDamaged;
         OnDeath -= OnPlayerDefeated;
     }
-
+    
     public void OnPlayerDamaged()
     {
         if (!_hitInvincible && hitInvincibilityTime > 0f)
@@ -54,7 +55,7 @@ public class PlayerEntity : Entity
         // Wait until not invincible anymore
         yield return new WaitForSeconds(hitInvincibilityTime);
             
-        // Make all hurtboxes not invincible aymore.
+        // Make all hurtboxes not invincible anymore.
         _hitInvincible = false;
         foreach (var hurtbox in _hurtboxes)
         {

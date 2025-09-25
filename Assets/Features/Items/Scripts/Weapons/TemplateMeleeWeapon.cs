@@ -16,7 +16,7 @@ namespace Features.Items.Scripts.Weapons
             hitbox.SetActive(false);
         }
 
-        public override void Attack()
+        protected override void Attack()
         {
             StartCoroutine(AttackCoroutine());
         }
