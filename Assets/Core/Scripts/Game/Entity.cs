@@ -82,11 +82,13 @@ namespace Core.Scripts.Game
             foreach (var hurtbox in _hurtboxes) {
                 hurtbox.StartInvincibility();
             }
+            Debug.Log(this + " invincible", this);
 
             // Wait until not invincible anymore
             yield return new WaitForSeconds(hitInvincibilityTime);
 
             // Make all hurtboxes not invincible anymore.
+            Debug.Log(this + " no longer invincible", this);
             _hitInvincible = false;
             foreach (var hurtbox in _hurtboxes) {
                 hurtbox.EndInvincibility();

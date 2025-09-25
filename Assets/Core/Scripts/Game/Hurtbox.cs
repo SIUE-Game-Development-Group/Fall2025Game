@@ -27,31 +27,34 @@ namespace Core.Scripts.Game
 
         public void HitboxEntered(Hitbox hitbox) 
         {
+            Debug.Log(this + " contacting " + hitbox, this);
             _contactingHitboxes.Add(hitbox);
             if (_hittable) entity.TakeDamage(hitbox.damage);
         }
 
         public void HitboxExited(Hitbox hitbox)
         {
+            Debug.Log(this + " no longer contacting " + hitbox, this);
             _contactingHitboxes.Remove(hitbox);
-        }
-
-        private void OnDisable()
-        {
-            // _contactingHitboxes.Clear();
         }
 
         public void StartInvincibility()
         {
+            Debug.Log(this + " is not hittable", this);
             _hittable = false;
         }
     
         public void EndInvincibility()
         {
+            Debug.Log(this + " is hittable again", this);
             _hittable = true;
             foreach (var hitbox in _contactingHitboxes)
             {
-                if (hitbox.entitiesHit.Contains(entity)) return;
+                if (hitbox.entitiesHit.Contains(entity))
+                {
+                    Debug.Log("hitbox has already hit " + entity + ", not hitting again");
+                    break;
+                }
                 hitbox.entitiesHit.Add(entity);
                 entity.TakeDamage(hitbox.damage);
                 
