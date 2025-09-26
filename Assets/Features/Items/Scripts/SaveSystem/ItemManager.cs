@@ -1,14 +1,7 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Core.Scripts.Game;
-using Features.Items.Scripts.SaveSystem;
-using Features.Items.Scripts.Weapons;
 using Features.MainCharacter.Scripts;
-using Mono.Cecil;
-using UnityEditor.UIElements;
 using Object = UnityEngine.Object;
 
 
@@ -18,9 +11,7 @@ public class ItemManager : MonoBehaviour
     
     public static List<Item> inventory;
 
-
     public static List<Item> AllItems = new List<Item>();
-    
     
     private string targetDirectoryPath = "Assets/Resources/Weapons";
 
@@ -30,16 +21,18 @@ public class ItemManager : MonoBehaviour
 
     public void Start()
     {
-        inventory = new List<Item>();
-        
+        // Set size of array to 3;
+        // 0 = item, 1 = passive, 2 = currency
+        inventory = new List<Item>(new Item[3]);
+
         //inventory.Add(new InventoryItem("Copper Sword", 1));
         //inventory.Add(new InventoryItem("Gold Coin", UnityEngine.Random.Range(34, 159)));
-        
+
+        // Load all items into memory
         LoadItems();
-        
-        SwapItem("a");
-        
-        RandomGenerateItem();
+
+        // Start item
+        SwapItem(RandomGenerateItem().name);
         
     }
 
@@ -72,12 +65,8 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-
     public void SwapItem(string itemName)
     {
-
-        GameObject createdItemObject;
-        
         // Find item by name
         Item itemSwap = FindItemByName(itemName);
         if (itemSwap == null)
@@ -91,23 +80,23 @@ public class ItemManager : MonoBehaviour
         if (swapItemPrefab != null)
         {
             Debug.Log("Successfully loaded swap item");
-            
+
             PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
             playerAttackScript.EquipWeapon(swapItemPrefab.GetComponent<Weapon>());
-        } else
+            inventory[0] = itemSwap;
+        }
+        else
         {
             Debug.LogWarning("Failed to load prefab from path: " + itemSwap.id);
             return;
         }
-        
-
     }
 
 
 
-    public void RandomGenerateItem()
+    public Item RandomGenerateItem()
     {
-        inventory.Add(AllItems[UnityEngine.Random.Range(0, AllItems.Count-1)]);
+        return AllItems[UnityEngine.Random.Range(0, AllItems.Count - 1)];
     }
     
     // Returns item if found, else returns null

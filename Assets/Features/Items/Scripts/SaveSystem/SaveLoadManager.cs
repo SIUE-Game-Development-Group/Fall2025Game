@@ -1,10 +1,8 @@
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Core.Scripts.Game;
-using Features.Items.Scripts.SaveSystem;
 
 public class SaveLoadManager : MonoBehaviour
 {
