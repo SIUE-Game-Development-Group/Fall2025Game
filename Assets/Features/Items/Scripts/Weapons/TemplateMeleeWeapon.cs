@@ -11,7 +11,7 @@ namespace Features.Items.Scripts.Weapons
         [SerializeField] private GameObject hitbox;
         
         
-        public void Start()
+        public override void Start()
         {
             hitbox.SetActive(false);
         }
@@ -24,14 +24,19 @@ namespace Features.Items.Scripts.Weapons
         public IEnumerator AttackCoroutine()
         {
             // Get direction to target
-            var mousePos = InputManager.Instance.MousePosition;
-            mousePos.z = 10f;
-            var mousePosWorld = Camera.main.ScreenToWorldPoint(mousePos);
-            mousePosWorld.z = 0;
-            Vector2 direction = mousePosWorld - transform.position;
+            Vector2 dir = InputManager.Instance.AttackInput;
+
+            float angle = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+
+            angle = (angle + 360) % 360; // Normalize to 0-360
+
+            int sector = Mathf.RoundToInt(angle / 45f) % 8;
+            Vector2 dirVector = Directions.Vectors[(Directions.Direction)sector];
+
+            angle = Mathf.Atan2(dirVector.x, dirVector.y) * Mathf.Rad2Deg;
 
             // Calculate the angle in degrees
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
             
             // Enable the hitbox gameobject
             hitbox.SetActive(true);

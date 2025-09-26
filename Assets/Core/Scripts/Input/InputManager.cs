@@ -7,6 +7,7 @@ namespace Core.Scripts.Input
     public class InputManager : Singleton<InputManager>
     {
         public Vector2 MoveInput { get; private set; }
+        public Vector2 AttackInput { get; private set; }
         public bool AttackJustPressed { get; private set; }
         public bool InteractJustPressed { get; private set; }
         public Vector3 MousePosition { get; private set; }
@@ -25,6 +26,11 @@ namespace Core.Scripts.Input
             MoveInput = new Vector2(
                 UnityEngine.Input.GetAxisRaw("Horizontal"),
                 UnityEngine.Input.GetAxisRaw("Vertical")
+            );
+
+            AttackInput = new Vector2(
+                UnityEngine.Input.GetAxisRaw("AttackHorizontal"),
+                UnityEngine.Input.GetAxisRaw("AttackVertical")
             );
 
             AttackJustPressed = UnityEngine.Input.GetKeyDown(KeyCode.Space);
