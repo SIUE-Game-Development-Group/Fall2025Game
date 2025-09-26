@@ -8,11 +8,11 @@ public class DroppedWeapon : Interactable {
     /// <summary>
     /// Weapon prefab to put on the player when this item is interacted to equip the weapon
     /// </summary>
-    public Weapon weaponPrefab;
+    public Weapon weapon;
 
     public void UpdateIcon()
     {
-        iconSpriteRenderer.sprite = weaponPrefab.icon;
+        iconSpriteRenderer.sprite = weapon.icon;
     }
 
     public override void Interact()

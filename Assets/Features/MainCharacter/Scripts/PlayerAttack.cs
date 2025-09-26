@@ -26,10 +26,19 @@ namespace Features.MainCharacter.Scripts
         public void EquipDroppedWeapon(DroppedWeapon droppedWeapon)
         {
             // Drop the current weapon if holding one
+            if (equippedWeapon)
+            {
+                var swappedDroppedWeapon = Instantiate(droppedWeaponPrefab).GetComponent<DroppedWeapon>();
+                swappedDroppedWeapon.weapon = equippedWeapon;
+                swappedDroppedWeapon.UpdateIcon();
+                Destroy(equippedWeapon.gameObject);
+
+            }
 
             // Instantiate the new weapon
-            var weapon = Instantiate(droppedWeapon.weaponPrefab, transform);
-            Destroy(droppedWeapon);
+            var weapon = Instantiate(droppedWeapon.weapon, transform);
+            equippedWeapon = weapon;
+            Destroy(droppedWeapon.gameObject);
         }
     }
 }
