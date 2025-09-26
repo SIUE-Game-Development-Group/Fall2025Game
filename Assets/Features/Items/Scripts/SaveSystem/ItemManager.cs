@@ -6,6 +6,8 @@ using System.Linq;
 using Core.Scripts.Game;
 using Features.Items.Scripts.SaveSystem;
 using Features.Items.Scripts.Weapons;
+using Features.MainCharacter.Scripts;
+using Mono.Cecil;
 using UnityEditor.UIElements;
 using Object = UnityEngine.Object;
 
@@ -17,13 +19,21 @@ public class ItemManager : MonoBehaviour
     public static List<Item> inventory;
 
 
-    public static List<Item> AllItems = new List<Item>(); 
+    public static List<Item> AllItems = new List<Item>();
+
+    public GameObject PlayerObject;
+    
     
     private string targetDirectoryPath = "Assets/Resources/Weapons";
+
+    // For swaping player's weapon
+    GameObject swapItemPrefab;
+    Transform parentObjectTransform;
 
     public void Start()
     {
         inventory = new List<Item>();
+        
         
         
         //inventory.Add(new InventoryItem("Copper Sword", 1));
@@ -31,13 +41,15 @@ public class ItemManager : MonoBehaviour
         
         LoadItems();
         
+        SwapItem(PlayerObject, "a");
+        
         RandomGenerateItem();
         
     }
 
     void Update()
     {
-        
+
     }
     
     // Scan all files in weapon directory and set id = (weapons path)
@@ -65,9 +77,38 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    public void SwapItem()
+    public void SwapItem(GameObject playerObject, string itemName)
     {
+
+        GameObject createdItemObject;
         
+        // Find item by name
+        Item itemSwap = FindItemByName(itemName);
+        if (itemSwap == null)
+        {
+            Debug.LogWarning("Could not swap item with name: " + itemName);
+            return;
+        }
+        
+        // Load item prefab into unity scene
+        swapItemPrefab = Resources.Load<GameObject>("Weapons/" + itemSwap.name);
+        if (swapItemPrefab != null)
+        {
+            Debug.Log("Successfully loaded swap item");
+            createdItemObject = Instantiate(swapItemPrefab);
+        } else
+        {
+            Debug.LogWarning("Failed to load prefab from path: " + itemSwap.id);
+            return;
+        }
+        
+        // Attach to player object 
+        createdItemObject.transform.parent = playerObject.transform;
+        
+        // TODO: Redirect PlayerAttack (Script) attached to playerObject with new instantiated object
+        
+        // TODO: Delete old weapon attached to player object
+
     }
 
 
