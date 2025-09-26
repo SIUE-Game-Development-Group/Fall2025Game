@@ -20,8 +20,6 @@ public class ItemManager : MonoBehaviour
 
 
     public static List<Item> AllItems = new List<Item>();
-
-    public GameObject PlayerObject;
     
     
     private string targetDirectoryPath = "Assets/Resources/Weapons";
@@ -34,14 +32,12 @@ public class ItemManager : MonoBehaviour
     {
         inventory = new List<Item>();
         
-        
-        
         //inventory.Add(new InventoryItem("Copper Sword", 1));
         //inventory.Add(new InventoryItem("Gold Coin", UnityEngine.Random.Range(34, 159)));
         
         LoadItems();
         
-        SwapItem(PlayerObject, "a");
+        SwapItem("a");
         
         RandomGenerateItem();
         
@@ -77,7 +73,7 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    public void SwapItem(GameObject playerObject, string itemName)
+    public void SwapItem(string itemName)
     {
 
         GameObject createdItemObject;
@@ -95,19 +91,15 @@ public class ItemManager : MonoBehaviour
         if (swapItemPrefab != null)
         {
             Debug.Log("Successfully loaded swap item");
-            createdItemObject = Instantiate(swapItemPrefab);
+            
+            PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
+            playerAttackScript.EquipWeapon(swapItemPrefab.GetComponent<Weapon>());
         } else
         {
             Debug.LogWarning("Failed to load prefab from path: " + itemSwap.id);
             return;
         }
         
-        // Attach to player object 
-        createdItemObject.transform.parent = playerObject.transform;
-        
-        // TODO: Redirect PlayerAttack (Script) attached to playerObject with new instantiated object
-        
-        // TODO: Delete old weapon attached to player object
 
     }
 

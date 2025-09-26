@@ -23,7 +23,7 @@ namespace Features.MainCharacter.Scripts
             }
         }
 
-        public void EquipDroppedWeapon(DroppedWeapon droppedWeapon)
+        public void EquipWeapon(Weapon weapon)
         {
             // Drop the current weapon if holding one
             if (equippedWeapon)
@@ -34,10 +34,16 @@ namespace Features.MainCharacter.Scripts
                 Destroy(equippedWeapon.gameObject);
 
             }
+            
+            // Instantiate a new copy of the weapon onto the player
+            var spawnedWeapon = Instantiate(weapon, transform);
+            equippedWeapon = spawnedWeapon;
+            
+        }
 
-            // Instantiate the new weapon
-            var weapon = Instantiate(droppedWeapon.weapon, transform);
-            equippedWeapon = weapon;
+        public void EquipDroppedWeapon(DroppedWeapon droppedWeapon)
+        {
+            EquipWeapon(droppedWeapon.weapon);
             Destroy(droppedWeapon.gameObject);
         }
     }
