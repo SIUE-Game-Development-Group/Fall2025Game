@@ -4,7 +4,6 @@ using Core.Scripts.Game;
 using Features.MainCharacter.Scripts;
 using Object = UnityEngine.Object;
 
-
 public class ItemManager : MonoBehaviour
 {
     // What the player currently holds
@@ -21,19 +20,22 @@ public class ItemManager : MonoBehaviour
 
     public void Start()
     {
-        // Set size of array to 3;
-        // 0 = item, 1 = passive, 2 = currency
-        inventory = new List<Item>(new Item[3]);
 
-        //inventory.Add(new InventoryItem("Copper Sword", 1));
-        //inventory.Add(new InventoryItem("Gold Coin", UnityEngine.Random.Range(34, 159)));
+        // Set size of array to 3;
+        inventory = new List<Item>(new Item[3]); // 0 = item, 1 = passive, 2 = currency
 
         // Load all items into memory
         LoadItems();
 
-        // Start item
+        // Start with random item
         SwapItem(RandomGenerateItem().name);
-        
+
+        // Load passive slot with nothing
+        inventory[1] = new Item("PassiveItemID", "Temp Passive Item", "A placeholder for a passive item", Item.Rarity.Common, 1);
+
+        // Load currency slot with 0
+        inventory[2] = new Item("GoldItemID", "Gold", "Player's Currency", Item.Rarity.Common, 0);
+
     }
 
     void Update()
@@ -83,6 +85,8 @@ public class ItemManager : MonoBehaviour
 
             PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
             playerAttackScript.EquipWeapon(swapItemPrefab.GetComponent<Weapon>());
+
+            // Update inventory weapon slot (Weapon slot only in slot 0)
             inventory[0] = itemSwap;
         }
         else
@@ -91,8 +95,6 @@ public class ItemManager : MonoBehaviour
             return;
         }
     }
-
-
 
     public Item RandomGenerateItem()
     {
