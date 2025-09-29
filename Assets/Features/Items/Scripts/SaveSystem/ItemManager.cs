@@ -7,11 +7,11 @@ using Object = UnityEngine.Object;
 public class ItemManager : MonoBehaviour
 {
     // What the player currently holds
-    
+
     public static List<Item> inventory;
 
     public static List<Item> AllItems = new List<Item>();
-    
+
     private string targetDirectoryPath = "Assets/Resources/Weapons";
 
     // For swaping player's weapon
@@ -35,12 +35,6 @@ public class ItemManager : MonoBehaviour
 
         // Load currency slot with 0
         inventory[2] = new Item("GoldItemID", "Gold", "Player's Currency", Item.Rarity.Common, 0);
-
-    }
-
-    void Update()
-    {
-
     }
     
     // Scan all files in weapon directory and set id = (weapons path)
@@ -48,7 +42,7 @@ public class ItemManager : MonoBehaviour
     {
         Debug.Log("Scanning for prefabs in directory: " + targetDirectoryPath);
         
-        var allAssets = Resources.LoadAll("", typeof(Item)); 
+        var allAssets = Resources.LoadAll("", typeof(Item));
 
         Debug.Log($"Found {allAssets.Length} assets in Resources folders:");
 
@@ -59,11 +53,10 @@ public class ItemManager : MonoBehaviour
             Item item = asset as Item;
 
             if (item == null) return;
-            
-            item.id = targetDirectoryPath + "/"  + item.name;
+
+            item.id = targetDirectoryPath + "/" + item.name;
 
             AllItems.Add(item);
-
         }
     }
 
@@ -100,7 +93,7 @@ public class ItemManager : MonoBehaviour
     {
         return AllItems[UnityEngine.Random.Range(0, AllItems.Count - 1)];
     }
-    
+
     // Returns item if found, else returns null
     public Item FindItemByName(string itemName)
     {
