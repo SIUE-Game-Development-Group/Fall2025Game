@@ -8,7 +8,7 @@ namespace Core.Scripts.Game
     [RequireComponent(typeof(Rigidbody2D))]
     public abstract class Entity : MonoBehaviour
     {
-        [SerializeField] float _maxHealth = 10f;
+        [SerializeField] public float _maxHealth = 10f;
         [SerializeField] float _moveSpeed = 5f;
 
         [Tooltip("These hitboxes may be temporarily disabled when taking damage (temporary invincibility)")]
@@ -28,7 +28,7 @@ namespace Core.Scripts.Game
         /// <summary>
         /// current health, set to max health when spawning
         /// </summary>
-        float _health = 10;
+        public float _health = 10;
 
         /// <summary>
         /// Last move direction that was requested by Move()
