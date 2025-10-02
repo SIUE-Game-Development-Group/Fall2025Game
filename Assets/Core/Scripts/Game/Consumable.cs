@@ -1,8 +1,12 @@
 using UnityEngine;
 
-public abstract class Consumable : Item
+namespace Core.Scripts.Game
 {
-    public int _quantity;
-    public abstract void Use();
-    public abstract bool CanUse();
+    public abstract class Consumable : Item
+    {
+        [SerializeField] private int _quantity;
+        
+        public abstract void Use();
+        public abstract bool CanUse();
+    }
 }
