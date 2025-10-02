@@ -16,7 +16,7 @@ public class ItemManager : MonoBehaviour
 
     // For swaping player's weapon
     GameObject swapItemPrefab;
-    Transform parentObjectTransform;
+
 
     public void Start()
     {
@@ -26,6 +26,15 @@ public class ItemManager : MonoBehaviour
 
         // Load all items into memory
         LoadItems();
+
+        // If damage totem equipped, buff damage
+        Attack_Damage damageTotem = GameObject.Find("DamageTotem").GetComponent<Attack_Damage>();
+        if (damageTotem)
+        {
+            Debug.Log("Damage totem equipped on start");
+            damageTotem.IncreaseDamageOfWeapon(gameObject.GetComponent<PlayerAttack>().equippedWeapon);
+            Debug.Log("Successfully ran increase damage function");
+        }
 
         // Start with random item
         SwapItem(RandomGenerateItem().name);
@@ -62,6 +71,17 @@ public class ItemManager : MonoBehaviour
 
     public void SwapItem(string itemName)
     {
+        PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
+
+        Attack_Damage damageTotem = GameObject.Find("DamageTotem").GetComponent<Attack_Damage>();
+
+        // Reset weapon damage buff if it exists
+        if (damageTotem != null)
+        {
+            Debug.Log("Found damage totem, running damage reset!");
+            damageTotem.ResetDamageMultOfWeapon(playerAttackScript.equippedWeapon);
+        }
+
         // Find item by name
         Item itemSwap = FindItemByName(itemName);
         if (itemSwap == null)
@@ -69,15 +89,16 @@ public class ItemManager : MonoBehaviour
             Debug.LogWarning("Could not swap item with name: " + itemName);
             return;
         }
+
         
+
         // Load item prefab into unity scene
         swapItemPrefab = Resources.Load<GameObject>("Weapons/" + itemSwap.name);
         if (swapItemPrefab != null)
         {
             Debug.Log("Successfully loaded swap item");
 
-            PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
-            playerAttackScript.EquipWeapon(swapItemPrefab.GetComponent<Weapon>());
+            playerAttackScript.EquipWeaponFromPrefab(swapItemPrefab.GetComponent<Weapon>());
 
             // Update inventory weapon slot (Weapon slot only in slot 0)
             inventory[0] = itemSwap;
@@ -87,7 +108,23 @@ public class ItemManager : MonoBehaviour
             Debug.LogWarning("Failed to load prefab from path: " + itemSwap.id);
             return;
         }
+
+        // Apply weapon damage buff if it exists
+        if (damageTotem != null)
+        {
+            Debug.Log("Found damage totem, running increase damage!");
+            damageTotem.IncreaseDamageOfWeapon(playerAttackScript.equippedWeapon);
+            Debug.Log("Successfully ran increase damage function after swapping weapon");
+        }
+        else
+        {
+            Debug.Log("Didn't find damage totem!");
+            Debug.Log(damageTotem);
+        }
+        
     }
+
+
 
     public Item RandomGenerateItem()
     {

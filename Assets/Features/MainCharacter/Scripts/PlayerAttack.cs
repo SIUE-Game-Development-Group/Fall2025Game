@@ -7,7 +7,7 @@ namespace Features.MainCharacter.Scripts
 {
     public class PlayerAttack : MonoBehaviour
     {
-        [SerializeField] private Weapon equippedWeapon;
+        [SerializeField] public Weapon equippedWeapon;
 
         [Header("Prefabs")]
         [SerializeField] private DroppedWeapon droppedWeaponPrefab;
@@ -23,7 +23,7 @@ namespace Features.MainCharacter.Scripts
             }
         }
 
-        public void EquipWeapon(Weapon weapon)
+        public void EquipWeaponFromPrefab(Weapon weapon)
         {
             // Drop the current weapon if holding one
             if (equippedWeapon)
@@ -43,7 +43,7 @@ namespace Features.MainCharacter.Scripts
 
         public void EquipDroppedWeapon(DroppedWeapon droppedWeapon)
         {
-            EquipWeapon(droppedWeapon.weapon);
+            EquipWeaponFromPrefab(droppedWeapon.weapon);
             Destroy(droppedWeapon.gameObject);
         }
     }

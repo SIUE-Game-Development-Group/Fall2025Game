@@ -48,16 +48,17 @@ namespace Core.Scripts.Game
         {
             Debug.Log(this + " is hittable again", this);
             _hittable = true;
-            foreach (var hitbox in _contactingHitboxes)
+            var _contactingHitboxesCopy = new HashSet<Hitbox>(_contactingHitboxes); // use copy incase contacting hitboxes is modified by defeat
+            foreach (var hitbox in _contactingHitboxesCopy)
             {
                 if (hitbox.entitiesHit.Contains(entity))
                 {
                     Debug.Log("hitbox has already hit " + entity + ", not hitting again");
-                    break;
+                    // break;
                 }
                 hitbox.entitiesHit.Add(entity);
                 entity.TakeDamage(hitbox.damage);
-                
+
                 // If taking damage caused this hurtbox to be invincible again,
                 // don't check for more hitboxes to hit this
                 if (!_hittable) break;

@@ -9,7 +9,7 @@ namespace Core.Scripts.Game
     public abstract class Weapon : Item
     {
         [SerializeField] private float cooldown;
-        [SerializeField] private Hitbox[] hitboxes;
+        [SerializeField] public Hitbox[] hitboxes;
         
         private float _cooldownTimer;
 
