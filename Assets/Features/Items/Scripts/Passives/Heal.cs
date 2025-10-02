@@ -4,7 +4,7 @@ using UnityEngine;
 public class HealPassive : MonoBehaviour
 {
     // How long before healing player
-    public float HealTime;
+    public float WaitTime;
 
     private float timer = 0f;
     public float HealAmount;
@@ -12,7 +12,7 @@ public class HealPassive : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (timer >= HealTime)
+        if (timer >= WaitTime)
         {
             timer = 0f;
             HealPlayer();
@@ -37,7 +37,6 @@ public class HealPassive : MonoBehaviour
         else
         {
             playerEntity._health += HealAmount;
-            // Debug.Log($"Healed {HealAmount} hp!");
         }
 
     }
