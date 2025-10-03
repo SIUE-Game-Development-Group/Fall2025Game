@@ -28,9 +28,12 @@ public class ItemManager : MonoBehaviour
         LoadItems();
 
         // If damage totem equipped, buff damage
-        Attack_Damage damageTotem = GameObject.Find("DamageTotem").GetComponent<Attack_Damage>();
-        if (damageTotem)
+
+        GameObject damageTotemInstance = GameObject.Find("DamageTotem");
+        
+        if (damageTotemInstance != null)
         {
+            Attack_Damage damageTotem = damageTotemInstance.GetComponent<Attack_Damage>();
             Debug.Log("Damage totem equipped on start");
             damageTotem.IncreaseDamageOfWeapon(gameObject.GetComponent<PlayerAttack>().equippedWeapon);
             Debug.Log("Successfully ran increase damage function");
@@ -73,14 +76,18 @@ public class ItemManager : MonoBehaviour
     {
         PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
 
-        Attack_Damage damageTotem = GameObject.Find("DamageTotem").GetComponent<Attack_Damage>();
+
 
         // Reset weapon damage buff if it exists
-        if (damageTotem != null)
-        {
-            Debug.Log("Found damage totem, running damage reset!");
-            damageTotem.ResetDamageMultOfWeapon(playerAttackScript.equippedWeapon);
-        }
+
+        GameObject damageTotemInstance = GameObject.Find("DamageTotem");
+        Attack_Damage damageTotem;
+        // if (damageTotemInstance != null)
+        // {
+        //     damageTotem = damageTotemInstance.GetComponent<Attack_Damage>();
+        //     Debug.Log("Found damage totem, running damage reset!");
+        //     //damageTotem.ResetDamageMultOfWeapon(playerAttackScript.equippedWeapon);
+        // }
 
         // Find item by name
         Item itemSwap = FindItemByName(itemName);
@@ -90,7 +97,7 @@ public class ItemManager : MonoBehaviour
             return;
         }
 
-        
+
 
         // Load item prefab into unity scene
         swapItemPrefab = Resources.Load<GameObject>("Weapons/" + itemSwap.name);
@@ -110,21 +117,19 @@ public class ItemManager : MonoBehaviour
         }
 
         // Apply weapon damage buff if it exists
-        if (damageTotem != null)
+        if (damageTotemInstance != null)
         {
+            damageTotem = damageTotemInstance.GetComponent<Attack_Damage>();
             Debug.Log("Found damage totem, running increase damage!");
             damageTotem.IncreaseDamageOfWeapon(playerAttackScript.equippedWeapon);
-            Debug.Log("Successfully ran increase damage function after swapping weapon");
+            Debug.Log("Successfully ran increase damage function");
         }
         else
         {
             Debug.Log("Didn't find damage totem!");
-            Debug.Log(damageTotem);
         }
-        
+
     }
-
-
 
     public Item RandomGenerateItem()
     {

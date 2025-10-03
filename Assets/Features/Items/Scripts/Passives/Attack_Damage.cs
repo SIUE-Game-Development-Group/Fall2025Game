@@ -6,14 +6,10 @@ public class Attack_Damage : MonoBehaviour
 {
     // Should be whole number
     public float DamageMultiplier = 1.5f;
-
-    private GameObject player;
-    public GameObject lastEquippedWeapon;
-
-
+    
     public void Start()
     {
-        
+
     }
 
     public void IncreaseDamageOfWeapon(Weapon weapon)
