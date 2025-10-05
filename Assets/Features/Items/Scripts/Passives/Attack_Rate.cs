@@ -3,30 +3,30 @@ using UnityEngine;
 
 public class Attack_Rate : MonoBehaviour
 {
-    // Should be whole number
     public float CooldownMultiplier = 1.5f;
 
-    public void Start()
-    {
-        
-    }
+    private float previousCooldown;
+    private bool previousAssigned = false;
 
     public void DecreaseRateOfWeapon(Weapon weapon)
     {
-        float previousCooldown = weapon.cooldown;
-        weapon.cooldown /= CooldownMultiplier;
+        previousCooldown = weapon.cooldown;
+        previousAssigned = true;
+
+        weapon.cooldown *= CooldownMultiplier;
+        
 
         Debug.Log($"Decreased attack rate, was {previousCooldown} now {weapon.cooldown}!");
-
-
     }
 
     // Reset the damage of the hitbox this script is currently buffing
-    public void ResetRateMultOfWeapon(Weapon weapon)
+    public void ResetRateOfWeapon(Weapon weapon)
     {
-        float previousCooldown = weapon.cooldown;
-        weapon.cooldown *= CooldownMultiplier;
-
-        Debug.Log($"Decreased attack rate, was {previousCooldown} now {weapon.cooldown}!");
+        if (previousAssigned)
+        {
+            Debug.Log($"Decreased attack rate, was {weapon.cooldown} now {previousCooldown}");
+            weapon.cooldown = previousCooldown;
+            previousAssigned = false;
+        }
     }
 }
