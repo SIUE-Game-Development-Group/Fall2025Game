@@ -6,6 +6,12 @@ using Core.Scripts.Game;
 
 public class SaveLoadManager : MonoBehaviour
 {
+    /*
+        TODO:
+            - On load, make sure to replace current weapon player is holding using
+            SwapItem function in ItemManager script!
+    */
+
     string path;
 
     public void Start()

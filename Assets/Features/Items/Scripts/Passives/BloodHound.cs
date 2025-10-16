@@ -10,8 +10,6 @@ using UnityEngine;
     TODO:
         - Ensure to reset all weapons original damage before swapping to new one and on totem discard!!
         Bug will occur if you don't reset damage before they drop their weapon for a new one
-        
-    
 */
 
 public class BloodHound : MonoBehaviour
@@ -38,9 +36,6 @@ public class BloodHound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        // playerObject.GetComponent<PlayerAttack>().equippedWeapon
-
         under50 = PlayerUnderHalfHP(playerObject.GetComponent<Entity>());
 
         // If player health is less than half, remember to only run once until above 50%
@@ -49,7 +44,7 @@ public class BloodHound : MonoBehaviour
             IncreaseDamage(playerObject.GetComponent<PlayerAttack>().equippedWeapon);
             increasedWeaponDamage = true;
         }
-        else
+        else // If player is back above 50% hp and gave damage buff; reset damage
         {
             if (!under50 && increasedWeaponDamage)
             {
@@ -57,10 +52,6 @@ public class BloodHound : MonoBehaviour
                 ResetDamage(playerObject.GetComponent<PlayerAttack>().equippedWeapon);
             }
         }
-
-
-        // If player is 50% health, reset weapon damage amount to what was before
-
     }
 
     public void IncreaseDamage(Weapon weapon)
