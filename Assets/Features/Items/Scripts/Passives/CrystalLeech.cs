@@ -1,7 +1,7 @@
 using Core.Scripts.Game;
 using UnityEngine;
 
-public class CrystalLeech : MonoBehaviour
+public class CrystalLeech : Item
 {
     GameObject player;
 

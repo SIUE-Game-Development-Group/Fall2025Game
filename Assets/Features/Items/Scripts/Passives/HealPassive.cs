@@ -1,7 +1,7 @@
 using Core.Scripts.Game;
 using UnityEngine;
 
-public class HealPassive : MonoBehaviour
+public class HealPassive : Item
 {
     // How long before healing player
     public float WaitTime;

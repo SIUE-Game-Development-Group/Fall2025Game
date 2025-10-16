@@ -12,7 +12,7 @@ using UnityEngine;
         Bug will occur if you don't reset damage before they drop their weapon for a new one
 */
 
-public class BloodHound : MonoBehaviour
+public class BloodHound : Item
 {
 
     public float DamageMultiplier = 2.0f;

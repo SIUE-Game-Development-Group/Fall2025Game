@@ -1,7 +1,7 @@
 using Core.Scripts.Game;
 using UnityEngine;
 
-public class Attack_Rate : MonoBehaviour
+public class Attack_Rate : Item
 {
     public float CooldownMultiplier = 1.5f;
 
@@ -14,7 +14,6 @@ public class Attack_Rate : MonoBehaviour
         previousAssigned = true;
 
         weapon.cooldown *= CooldownMultiplier;
-        
 
         Debug.Log($"Decreased attack rate, was {previousCooldown} now {weapon.cooldown}!");
     }

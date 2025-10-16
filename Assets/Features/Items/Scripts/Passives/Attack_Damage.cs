@@ -2,7 +2,7 @@ using Core.Scripts.Game;
 using Features.Items.Scripts.Weapons;
 using UnityEngine;
 
-public class Attack_Damage : MonoBehaviour
+public class Attack_Damage : Item
 {
     // Should be whole number
     public float DamageMultiplier = 1.5f;
