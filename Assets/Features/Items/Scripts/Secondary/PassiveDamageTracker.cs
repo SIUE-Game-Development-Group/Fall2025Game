@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Core.Scripts.Game;
 using UnityEngine;
-
+//Summary: Use in junction with Shield passive to track and add to hit counter globally only when enemies are damage by weapon.
 public class PassiveDamageTracker : MonoBehaviour
 {
     private DissociationShield shield; // Reference to the shield passive
