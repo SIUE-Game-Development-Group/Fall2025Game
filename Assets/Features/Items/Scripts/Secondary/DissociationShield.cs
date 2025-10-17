@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using Core.Scripts.Game;
+//Summary: Dissociation Shield takes count of number of hits a player does to enemies in total, 
+//         when threshold is equal or above, it activates Shield, disable buildup of hits and
+//         when decactivated, places cooldown on shield passive which afterwards, hit count begins again. 
 public class DissociationShield : Accessory
 {
 
