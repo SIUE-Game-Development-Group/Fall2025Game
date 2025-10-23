@@ -1,3 +1,4 @@
+using System.Collections;
 using Core.Scripts.Game;
 using UnityEngine;
 
@@ -6,9 +7,18 @@ public class CrystalLeech : Item
     GameObject player;
 
     public float DrainHPTo = 1f;
+    private float invincibilityTimer = 10f;
+    private Hurtbox hurtbox;
+    
+    // For test purpose activation
+    private float timer = 0;
+    private bool abilityUsed = false;
 
-    float timer = 0;
-    bool abilityUsed = false;
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player");
+        hurtbox = player.GetComponent<Hurtbox>();
+    }
 
     // For testing purposes use ability automatically after 5 seconds
     void Update()
@@ -30,7 +40,6 @@ public class CrystalLeech : Item
     public void UseAbility()
     {
         // ~ ~ ~ ~ Drain life to minimum amount ~ ~ ~ ~ 
-        player = GameObject.FindWithTag("Player");
         Entity playerEntity = player.GetComponent<Entity>();
 
         // Warn in debug logs that the hp to "drain" to was greater than player's health (a.k.a didn't lose health)
@@ -41,12 +50,22 @@ public class CrystalLeech : Item
         Debug.Log($"Using Crystal Leech Totem! Drained player health to {playerEntity._health}");
 
         // ~ ~ ~ ~ Call upon ability for player ~ ~ ~ ~ 
-        Ability(player);
+        StartCoroutine(Ability());
     }
-    // TODO: Add ability
-    public void Ability(GameObject player)
+    // Invincibility for "invinciblityTimer" duration
+    private IEnumerator Ability()
     {
-        Debug.Log("Using Crystal Leech's ability and destroying self!");
+        Debug.Log("Invincibility Activated!");
+        
+        hurtbox.StartInvincibility();
+
+        yield return new WaitForSeconds(invincibilityTimer);
+
+        hurtbox.EndInvincibility();
+        Debug.Log("Invincibility Deactivated!");
+
         Destroy(this.gameObject);
     }
+
+
 }
