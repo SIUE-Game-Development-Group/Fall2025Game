@@ -46,7 +46,7 @@ public class CrystalLeech : Item
     // TODO: Add ability
     public void Ability(GameObject player)
     {
-        Debug.Log("Using Crystal Leech's ability!");
+        Debug.Log("Using Crystal Leech's ability and destroying self!");
         Destroy(this.gameObject);
     }
 }

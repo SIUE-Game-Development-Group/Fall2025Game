@@ -9,7 +9,7 @@ public class SaveLoadManager : MonoBehaviour
     /*
         TODO:
             - On load, make sure to replace current weapon player is holding using
-            SwapItem function in ItemManager script!
+            SwapItem function in ItemManager script!`
     */
 
     string path;
@@ -37,6 +37,9 @@ public class SaveLoadManager : MonoBehaviour
             FileStream stream = new FileStream(path, FileMode.Open);
 
             ItemManager.inventory = formatter.Deserialize(stream) as List<Item>;
+
+            // Swap current weapons here!!
+
             stream.Close();
             Debug.Log("Game Loaded!");
         }
