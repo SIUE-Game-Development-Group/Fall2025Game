@@ -23,17 +23,14 @@ public class CrystalLeech : Item
     // For testing purposes use ability automatically after 5 seconds
     void Update()
     {
-        // Wait 5 seconds to use ability once
-        if (abilityUsed == false)
-        {
-            timer += Time.deltaTime;
-
-            if (timer >= 5)
+        Entity playerEntity = player.GetComponent<Entity>();
+        
+            if (playerEntity._health <= playerEntity._maxHealth * .10)
             {
                 UseAbility();
-                abilityUsed = true;
+                
             }
-        }
+        
     }
 
     // Drains life to minimum and calls ability function to activate power

@@ -39,7 +39,8 @@ public class SaveLoadManager : MonoBehaviour
             ItemManager.inventory = formatter.Deserialize(stream) as List<Item>;
 
             // Swap current weapons here!!
-
+            
+            
             stream.Close();
             Debug.Log("Game Loaded!");
         }

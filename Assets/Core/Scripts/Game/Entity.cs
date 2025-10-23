@@ -39,15 +39,18 @@ namespace Core.Scripts.Game
         /// Event invoked when this entity takes damage
         /// </summary>
         public event Action OnDamaged;
-    
+
         /// <summary>
         /// Evet invoked when this entity's health becomes 0 or lower
         /// </summary>
+        private Transform weaponRateTotemInstance;
+        
         public event Action OnDeath;
 
         public virtual void Start() {
             _rb = GetComponent<Rigidbody2D>();
             _health = _maxHealth; // initialize hp to max hp
+            weaponRateTotemInstance = transform.Find("CrystalLeech");
         }
 
         public void Update() {
@@ -64,9 +67,17 @@ namespace Core.Scripts.Game
             OnDamaged?.Invoke();
 
             if (_health <= 0) {
-                _health = 0;
-                Death();
-                OnDeath?.Invoke();
+                if (weaponRateTotemInstance != null)
+                {
+                    
+                    
+                }
+                else
+                {
+                    _health = 0;
+                    Death();
+                    OnDeath?.Invoke();
+                }
             } else if (!_hitInvincible && hitInvincibilityTime > 0f) {
                 StartCoroutine(TemporaryInvincibility());
             }
