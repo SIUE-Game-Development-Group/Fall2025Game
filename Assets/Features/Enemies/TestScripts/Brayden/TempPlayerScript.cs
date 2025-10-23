@@ -6,8 +6,8 @@ public class TempPlayerScript : MonoBehaviour
     float i = 0;
 
     public float speed;
-    Vector3 direction;
-    Vector3 facing = Vector3.right;
+    Vector2 direction;
+    Vector2 facing = Vector2.right;
     float timeOrthogonal;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
