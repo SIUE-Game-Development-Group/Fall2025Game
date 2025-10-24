@@ -108,6 +108,9 @@ public class SaveLoadManager : MonoBehaviour
             {
                 itemManager.AddPassive(passive.gameObject.name);
             }
+        } else
+        {
+            Debug.LogWarning("Passive Save file not found.");
         }
     }
 }
