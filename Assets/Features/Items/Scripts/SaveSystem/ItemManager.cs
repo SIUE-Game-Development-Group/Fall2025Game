@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Core.Scripts.Game;
@@ -6,11 +7,19 @@ using Object = UnityEngine.Object;
 
 public class ItemManager : MonoBehaviour
 {
+    
+    /* TODO:
+            1. Make function to swap passives and update the Inventory List accordingly
+            2. Rework invenotry system to support multiple weapons and passives rather than set slots
+                - Create different lists for weapons/coins, and collected passives/active items
+     */
+    
+    
     // What the player currently holds
 
     public static List<Item> inventory;
 
-    public static List<Item> AllItems = new List<Item>();
+    [SerializeField] static List<Item> AllItems = new List<Item>();
 
     private string targetDirectoryPath = "Assets/Resources/Weapons";
 
@@ -41,11 +50,18 @@ public class ItemManager : MonoBehaviour
         // Start with random item
         SwapItem(RandomGenerateItem().name);
 
+        // Load weapon after swap
+        PlayerAttack playerAttack = GameObject.FindWithTag("Player").GetComponent<PlayerAttack>();
+        inventory[0] = playerAttack.equippedWeapon;
+        
         // Load passive slot with nothing
         inventory[1] = new Item("PassiveItemID", "Temp Passive Item", "A placeholder for a passive item", Item.Rarity.Common, 1);
 
         // Load currency slot with 0
         inventory[2] = new Item("GoldItemID", "Gold", "Player's Currency", Item.Rarity.Common, 0);
+        
+        
+        
     }
     
     // Scan all files in weapon directory and set id = (weapons path)
@@ -71,7 +87,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public void SwapItem(string itemName)
+    public void SwapItem(string itemName, string beginningFolderName="Weapons/")
     {
         PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
 
@@ -86,7 +102,7 @@ public class ItemManager : MonoBehaviour
 
 
         // Load item prefab into unity scene
-        swapItemPrefab = Resources.Load<GameObject>("Weapons/" + itemSwap.name);
+        swapItemPrefab = Resources.Load<GameObject>(beginningFolderName + itemSwap.name);
         if (swapItemPrefab != null)
         {
             Debug.Log("Successfully loaded swap item");

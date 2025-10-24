@@ -60,7 +60,7 @@ public class CrystalLeech : Item
 
         hurtbox.EndInvincibility();
         Debug.Log("Invincibility Deactivated!");
-
+        
         Destroy(this.gameObject);
     }
 

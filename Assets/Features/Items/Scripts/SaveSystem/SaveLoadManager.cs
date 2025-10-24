@@ -13,16 +13,20 @@ public class SaveLoadManager : MonoBehaviour
     */
 
     string path;
-
-    public void Start()
-    {
-        path = Application.persistentDataPath + "/inventorySave.dat";
-    }
-
+    
     public void Save()
     {
         BinaryFormatter formatter = new BinaryFormatter();
+        
+        if (path == null) path = Application.persistentDataPath + "/inventorySave.dat";
+        
         FileStream stream = new FileStream(path, FileMode.Create);
+
+        if (ItemManager.inventory == null)
+        {
+            Debug.LogError("SaveLoadManager: Could not save because ItemManager.inventory is null!");
+            return;
+        }
         
         formatter.Serialize(stream, ItemManager.inventory);
         stream.Close();
@@ -39,7 +43,8 @@ public class SaveLoadManager : MonoBehaviour
             ItemManager.inventory = formatter.Deserialize(stream) as List<Item>;
 
             // Swap current weapons here!!
-            
+            ItemManager manager = new ItemManager();
+            manager.SwapItem(ItemManager.inventory[0].name);
             
             stream.Close();
             Debug.Log("Game Loaded!");
