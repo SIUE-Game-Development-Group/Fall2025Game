@@ -28,7 +28,6 @@ public class ItemManager : MonoBehaviour
 
     public void Start()
     {
-
         // Set size of array to 3;
         inventory = new List<Item>(new Item[3]); // 0 = item, 1 = passive, 2 = currency
 
@@ -60,18 +59,12 @@ public class ItemManager : MonoBehaviour
         // Load currency slot with 0
         inventory[2] = new Item("GoldItemID", "Gold", "Player's Currency", Item.Rarity.Common, 0);
         
-        
-        
     }
     
     // Scan all files in weapon directory and set id = (weapons path)
     public void LoadItems()
-    {
-        Debug.Log("Scanning for prefabs in directory: " + targetDirectoryPath);
-        
+    {        
         var allAssets = Resources.LoadAll("", typeof(Item));
-
-        Debug.Log($"Found {allAssets.Length} assets in Resources folders:");
 
         foreach (Object asset in allAssets)
         {
@@ -98,8 +91,6 @@ public class ItemManager : MonoBehaviour
             Debug.LogWarning("Could not swap item with name: " + itemName);
             return;
         }
-
-
 
         // Load item prefab into unity scene
         swapItemPrefab = Resources.Load<GameObject>(beginningFolderName + itemSwap.name);

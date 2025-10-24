@@ -9,10 +9,6 @@ public class CrystalLeech : Item
     public float DrainHPTo = 1f;
     private float invincibilityTimer = 10f;
     private Hurtbox hurtbox;
-    
-    // For test purpose activation
-    private float timer = 0;
-    private bool abilityUsed = false;
 
     void Start()
     {

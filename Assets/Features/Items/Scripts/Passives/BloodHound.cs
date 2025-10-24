@@ -14,9 +14,7 @@ using UnityEngine;
 
 public class BloodHound : Item
 {
-
     public float DamageMultiplier = 2.0f;
-
     List<float> previousDamage;
 
     GameObject playerObject;
