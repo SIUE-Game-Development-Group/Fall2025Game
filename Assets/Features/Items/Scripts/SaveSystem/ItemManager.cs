@@ -12,7 +12,7 @@ public class ItemManager : MonoBehaviour
 
     /* TODO:
             1. Make function to swap passives and update the Inventory List accordingly
-            2. Rework invenotry system to support multiple weapons and passives rather than set slots
+            2. Rework inventory system to support multiple weapons and passives rather than set slots
                 - Create different lists for weapons/coins, and collected passives/active items
      */
 
@@ -23,8 +23,10 @@ public class ItemManager : MonoBehaviour
     public List<Item> passives;
 
     public static List<Item> AllItems = new List<Item>();
+    public static List<Item> AllPassives = new List<Item>();
 
-    private string targetDirectoryPath = "Assets/Resources/Weapons";
+    private string targetDirectoryPathWeapons = "Assets/Resources/Weapons";
+    private string targetDirectoryPathPassives = "Assets/Resources/Passives";
 
     // For swaping player's weapon
     GameObject swapItemPrefab;
@@ -38,6 +40,7 @@ public class ItemManager : MonoBehaviour
 
         // Load all items into memory
         LoadItems();
+        LoadPassives();
 
         // If damage totem equipped, buff damage
         GameObject damageTotemInstance = GameObject.Find("DamageTotem");
@@ -62,11 +65,11 @@ public class ItemManager : MonoBehaviour
         manager.Save();
 
     }
-
+    
     // Scan all files in weapon directory and set id = (weapons path)
     public void LoadItems()
     {
-        var allAssets = Resources.LoadAll("", typeof(Item));
+        var allAssets = Resources.LoadAll("Weapons", typeof(Item));
 
         foreach (Object asset in allAssets)
         {
@@ -76,9 +79,27 @@ public class ItemManager : MonoBehaviour
 
             if (item == null) return;
 
-            item.id = targetDirectoryPath + "/" + item.name;
+            item.id = targetDirectoryPathWeapons + "/" + item.name;
 
             AllItems.Add(item);
+        }
+    }
+
+    public void LoadPassives()
+    {
+        var allAssets = Resources.LoadAll("Passives", typeof(Item));
+
+        foreach (Object asset in allAssets)
+        {
+            Debug.Log($"Asset Name: {asset.name}, Type: {asset.GetType().Name}");
+
+            Item item = asset as Item;
+
+            if (item == null) return;
+
+            item.id = targetDirectoryPathPassives + "/" + item.name;
+
+            AllPassives.Add(item);
         }
     }
     
@@ -86,7 +107,7 @@ public class ItemManager : MonoBehaviour
     public void AddPassive(string itemName)
     {
         // Find item by name and make sure it exists
-        Item passiveItem = FindItemByName(itemName);
+        Item passiveItem = FindPassiveByName(itemName);
         if (passiveItem == null)
         {
             Debug.LogError("ItemManager - AddPassive: Item not found!");
@@ -108,7 +129,7 @@ public class ItemManager : MonoBehaviour
     public void SwapItem(string itemName)
     {
         PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
-
+        
         // Find item by name
         Item itemSwap = FindItemByName(itemName);
         if (itemSwap == null)
@@ -116,6 +137,7 @@ public class ItemManager : MonoBehaviour
             Debug.LogWarning("Could not swap item with name: " + itemName);
             return;
         }
+        
 
         // Load item prefab into unity scene
         swapItemPrefab = Resources.Load<GameObject>("Weapons/" + itemSwap.name);
@@ -124,9 +146,9 @@ public class ItemManager : MonoBehaviour
             Debug.Log("Successfully loaded swap item");
 
             playerAttackScript.EquipWeaponFromPrefab(swapItemPrefab.GetComponent<Weapon>());
-
             // Update inventory weapon slot (Weapon slot only in slot 0)
             inventory[0] = itemSwap;
+            
         }
         else
         {
@@ -167,6 +189,16 @@ public class ItemManager : MonoBehaviour
         {
             if (item.name == itemName) return item;
         }
+        return null;
+    }
+
+    public static Item FindPassiveByName(string passiveName)
+    {
+        foreach (Item passive in AllPassives)
+        {
+            if (passive.name == passiveName) return passive;
+        }
+
         return null;
     }
 }
