@@ -7,19 +7,19 @@ public class ProjectileCode : MonoBehaviour
     float projectileDuration;
     public Vector3 projectileDirection;
     public GameObject enemy;
-    public EnemyAIWill enemyAIWill;
+    // public EnemyAIWill enemyAIWill;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         projectileDirection = rb.linearVelocity.normalized;
-        speed = 1f;
+        speed = 10f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        speed -= Time.deltaTime * 2f;
+        speed -= Time.deltaTime * 10f;
         projectileDuration += Time.deltaTime;
         if (projectileDuration > 5.0f)
         {
