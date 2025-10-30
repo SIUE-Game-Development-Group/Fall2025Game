@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class TotemOfBurden : Accessory
 {
     [SerializeField] private float linkDuration = 5f;
-    // [SerializeField] private GameObject linkProjectilePrefab;
+    // TO DO: Need to make object for projectile to work [SerializeField] private GameObject linkProjectilePrefab;
 
     private Enemy enemyA;
     private Enemy enemyB;

@@ -44,6 +44,8 @@ namespace Core.Scripts.Game
         /// Evet invoked when this entity's health becomes 0 or lower
         /// </summary>
         private Transform weaponRateTotemInstance;
+
+        public float LastDamageTaken;
         
         public event Action OnDeath;
 
@@ -63,6 +65,7 @@ namespace Core.Scripts.Game
 
         public void TakeDamage(float amount) {
             _health -= amount;
+            LastDamageTaken = amount;
             Debug.Log(gameObject.name + " damaged " + amount);
             OnDamaged?.Invoke();
 
