@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class E : Enemy
+public class E : MonoBehaviour
 {
      public float speed;
     public float bulletspeed;
@@ -14,13 +14,13 @@ public class E : Enemy
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public virtual void Start()
     {
-        base.Start();
+        //base.Start();
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        base.Update();
+       // base.Update();
         movement();
 
         totalTime += Time.deltaTime;
