@@ -9,10 +9,6 @@ public class CrystalLeech : Item
     public float DrainHPTo = 1f;
     private float invincibilityTimer = 10f;
     private Hurtbox hurtbox;
-    
-    // For test purpose activation
-    private float timer = 0;
-    private bool abilityUsed = false;
 
     void Start()
     {
@@ -23,17 +19,14 @@ public class CrystalLeech : Item
     // For testing purposes use ability automatically after 5 seconds
     void Update()
     {
-        // Wait 5 seconds to use ability once
-        if (abilityUsed == false)
-        {
-            timer += Time.deltaTime;
-
-            if (timer >= 5)
+        Entity playerEntity = player.GetComponent<Entity>();
+        
+            if (playerEntity._health <= playerEntity._maxHealth * .10)
             {
                 UseAbility();
-                abilityUsed = true;
+                
             }
-        }
+        
     }
 
     // Drains life to minimum and calls ability function to activate power
@@ -63,7 +56,7 @@ public class CrystalLeech : Item
 
         hurtbox.EndInvincibility();
         Debug.Log("Invincibility Deactivated!");
-
+        
         Destroy(this.gameObject);
     }
 
