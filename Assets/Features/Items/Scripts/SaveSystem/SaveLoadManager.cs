@@ -7,12 +7,6 @@ using Unity.VisualScripting;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    /*
-        TODO:
-            - On load, make sure to replace current weapon player is holding using
-            SwapItem function in ItemManager script!`
-    */
-
     private string defaultPath;
     public static string weaponSaveName;
     public static string passiveSaveName;
@@ -32,8 +26,6 @@ public class SaveLoadManager : MonoBehaviour
         if (weaponSaveName == null) weaponSaveName = "/weaponSave.dat";
 
         ItemManager itemManager = GameObject.FindWithTag("Player").GetComponent<ItemManager>();
-
-        Debug.Log($"Save path: {defaultPath}/...");
 
         // Path locations
         string weaponPath = defaultPath + weaponSaveName;
@@ -108,6 +100,7 @@ public class SaveLoadManager : MonoBehaviour
             {
                 itemManager.AddPassive(passive.gameObject.name);
             }
+            
         } else
         {
             Debug.LogWarning("Passive Save file not found.");
