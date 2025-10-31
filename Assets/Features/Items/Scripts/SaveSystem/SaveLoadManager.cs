@@ -10,14 +10,20 @@ public class SaveLoadManager : MonoBehaviour
     private string defaultPath;
     public static string weaponSaveName;
     public static string passiveSaveName;
+    
+    // Path locations
+    private string weaponPath;
+    private string passiveSavePath;
 
     [SerializeField] List<string> itemSave = new List<string>();
 
     public void Start()
     {
-        defaultPath = Application.persistentDataPath;
-        passiveSaveName = "/passiveSave.dat";
-        weaponSaveName = "/weaponSave.dat";
+        if (defaultPath == null) defaultPath = Application.persistentDataPath;
+        if (passiveSaveName == null) passiveSaveName = "/passiveSave.dat";
+        if (weaponSaveName == null) weaponSaveName = "/weaponSave.dat";
+        weaponPath = defaultPath + weaponSaveName;
+        passiveSavePath = defaultPath + passiveSaveName;
     }
 
     private bool SaveItemNames(List<Item> inventory)
@@ -40,13 +46,13 @@ public class SaveLoadManager : MonoBehaviour
         if (defaultPath == null) defaultPath = Application.persistentDataPath;
         if (passiveSaveName == null) passiveSaveName = "/passiveSave.dat";
         if (weaponSaveName == null) weaponSaveName = "/weaponSave.dat";
-
+        
+        weaponPath = defaultPath + weaponSaveName;
+        passiveSavePath = defaultPath + passiveSaveName;
+        
         ItemManager itemManager = GameObject.FindWithTag("Player").GetComponent<ItemManager>();
 
-        // Path locations
-        string weaponPath = defaultPath + weaponSaveName;
-        //string passiveSavePath = defaultPath + passiveSaveName;
-
+        
         BinaryFormatter formatter = new BinaryFormatter();
 
         // Creating save files at given paths
@@ -76,14 +82,15 @@ public class SaveLoadManager : MonoBehaviour
         weaponStream.Close();
         //passiveStream.Close();
 
-        Debug.Log("Game Saved!");
+        Debug.Log($"Game Saved! Path: {defaultPath}");
         
     }
 
     public void Load()
     {
 
-        string inventoryPath = defaultPath + weaponSaveName;
+        //string inventoryPath = defaultPath + weaponSaveName;
+        string inventoryPath = Application.persistentDataPath + "/weaponSave.dat";
         string passivePath = defaultPath + passiveSaveName; 
 
         ItemManager itemManager = GameObject.FindWithTag("Player").GetComponent<ItemManager>();
@@ -113,6 +120,7 @@ public class SaveLoadManager : MonoBehaviour
             Debug.LogWarning("Inventory Save file not found.");
         }
         
+        /*
         // Load passives
         if (File.Exists(passivePath))
         {
@@ -131,5 +139,6 @@ public class SaveLoadManager : MonoBehaviour
         {
             Debug.LogWarning("Passive Save file not found.");
         }
+        */
     }
 }

@@ -61,8 +61,9 @@ public class ItemManager : MonoBehaviour
         AddPassive("CrystalLeech");
         
         // Test save items on start (REMOVE WHEN DONE TESTING)
-        SaveLoadManager manager = new SaveLoadManager();
-        manager.Save();
+        //SaveLoadManager manager = new SaveLoadManager();
+        //manager.Save();
+        //manager.Load();
 
     }
     
