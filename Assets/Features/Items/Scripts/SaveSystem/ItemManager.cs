@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using Core.Scripts.Game;
 using Features.MainCharacter.Scripts;
 using Object = UnityEngine.Object;
-using UnityEngine.InputSystem.Processors;
-using Unity.VisualScripting;
 
 public class ItemManager : MonoBehaviour
 {
@@ -59,11 +57,6 @@ public class ItemManager : MonoBehaviour
         // Give player passives on start (REMOVE WHEN DONE TESTING)
         AddPassive("BloodHoundTotem");
         AddPassive("CrystalLeech");
-        
-        // Test save items on start (REMOVE WHEN DONE TESTING)
-        //SaveLoadManager manager = new SaveLoadManager();
-        //manager.Save();
-        //manager.Load();
 
     }
     
@@ -103,7 +96,7 @@ public class ItemManager : MonoBehaviour
             AllPassives.Add(item);
         }
     }
-    
+
     // Add passive by string name of actual item (NOT by item name but gameobject name!!!!)
     public void AddPassive(string itemName)
     {

@@ -3,26 +3,33 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections.Generic;
 using Core.Scripts.Game;
-using Unity.VisualScripting;
+
+/*
+    TODO:
+        - Remove already equipped passives after loading new ones in from save
+*/
 
 public class SaveLoadManager : MonoBehaviour
 {
     private string defaultPath;
     public static string weaponSaveName;
     public static string passiveSaveName;
-    
+
     // Path locations
-    private string weaponPath;
+    private string weaponSavePath;
     private string passiveSavePath;
 
     [SerializeField] List<string> itemSave = new List<string>();
+    [SerializeField] List<string> passiveSave = new List<string>();
 
     public void Start()
     {
-        if (defaultPath == null) defaultPath = Application.persistentDataPath;
-        if (passiveSaveName == null) passiveSaveName = "/passiveSave.dat";
-        if (weaponSaveName == null) weaponSaveName = "/weaponSave.dat";
-        weaponPath = defaultPath + weaponSaveName;
+        defaultPath = Application.persistentDataPath;
+        
+        passiveSaveName = "/passiveSave.dat";
+        weaponSaveName = "/weaponSave.dat";
+        
+        weaponSavePath = defaultPath + weaponSaveName;
         passiveSavePath = defaultPath + passiveSaveName;
     }
 
@@ -39,68 +46,79 @@ public class SaveLoadManager : MonoBehaviour
 
         return true;
     }
-    
+
+    private bool SavePassiveNames(List<Item> passives)
+    {
+        if (passives == null)
+        {
+            Debug.LogError("SaveLoadManager: Passives inventory is null");
+            return false;
+        }
+
+        foreach (Item passive in passives)
+        {
+            if (passive != null)
+            {
+                passiveSave.Add(passive.gameObject.name);
+                Debug.Log("Currently saving " + passive.gameObject.name);
+            }
+        }
+        return true;
+
+    }
+
     public void Save()
     {
-        // Fallback if not found or tried to call function from other script before start was called
-        if (defaultPath == null) defaultPath = Application.persistentDataPath;
-        if (passiveSaveName == null) passiveSaveName = "/passiveSave.dat";
-        if (weaponSaveName == null) weaponSaveName = "/weaponSave.dat";
-        
-        weaponPath = defaultPath + weaponSaveName;
-        passiveSavePath = defaultPath + passiveSaveName;
-        
+        Start();
+
         ItemManager itemManager = GameObject.FindWithTag("Player").GetComponent<ItemManager>();
 
-        
+
         BinaryFormatter formatter = new BinaryFormatter();
 
         // Creating save files at given paths
-        FileStream weaponStream = new FileStream(weaponPath, FileMode.Create);
-        //FileStream passiveStream = new FileStream(passiveSavePath, FileMode.Create);
-        
+        FileStream weaponStream = new FileStream(weaponSavePath, FileMode.Create);
+        FileStream passiveStream = new FileStream(passiveSavePath, FileMode.Create);
+
         // Only returns false if inventory is null
         if (!SaveItemNames(itemManager.inventory)) return;
-        
+        SavePassiveNames(itemManager.passives);
+
         // Ensure the data we're saving is not null
         if (itemSave == null)
         {
             Debug.LogError("SaveLoadManager: Could not save because itemSave is null!");
             return;
         }
-        /*if (itemManager.passives == null)
+        if (passiveSave == null)
         {
-            Debug.LogError("SaveLoadManager: Could not save because ItemManager.passives is null!");
-            return;
-        }*/
+            Debug.LogWarning("SaveLoadManager: Could not save passives because passiveSave is null!");
+        }
 
         // Write out encrypted files
         formatter.Serialize(weaponStream, itemSave);
-        //formatter.Serialize(passiveStream, itemManager.passives);
+        formatter.Serialize(passiveStream, passiveSave);
 
         // Close streams after we're done writing
         weaponStream.Close();
-        //passiveStream.Close();
+        passiveStream.Close();
 
         Debug.Log($"Game Saved! Path: {defaultPath}");
-        
+
     }
 
     public void Load()
     {
-
-        //string inventoryPath = defaultPath + weaponSaveName;
-        string inventoryPath = Application.persistentDataPath + "/weaponSave.dat";
-        string passivePath = defaultPath + passiveSaveName; 
+        Start();
 
         ItemManager itemManager = GameObject.FindWithTag("Player").GetComponent<ItemManager>();
 
         // Load weapons inventory
-        if (File.Exists(inventoryPath))
+        if (File.Exists(weaponSavePath))
         {
             // Open file and overwrite inventory list
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(inventoryPath, FileMode.Open);
+            FileStream stream = new FileStream(weaponSavePath, FileMode.Open);
             itemSave = formatter.Deserialize(stream) as List<string>;
 
             if (itemSave == null || itemSave[0] == null)
@@ -108,37 +126,45 @@ public class SaveLoadManager : MonoBehaviour
                 Debug.LogError("SaveLoadManager: itemSave is null! Cannot load item!");
                 return;
             }
-            
+
             // Swap weapons after updating inventory list
             itemManager.SwapItem(itemSave[0]);
 
             stream.Close();
-            Debug.Log("Game Loaded!");
+
+            Debug.Log("Loaded all weapons!");
         }
         else
         {
-            Debug.LogWarning("Inventory Save file not found.");
+            Debug.LogError("Inventory Save file not found.");
         }
-        
-        /*
+
         // Load passives
-        if (File.Exists(passivePath))
+        if (File.Exists(passiveSavePath))
         {
             // Open file and overwrite passives list
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(passivePath, FileMode.Open);
-            itemManager.passives = formatter.Deserialize(stream) as List<Item>;
+            FileStream stream = new FileStream(passiveSavePath, FileMode.Open);
+            passiveSave = formatter.Deserialize(stream) as List<string>;
+
+            itemManager.passives.Clear();
 
             // Load saved passives onto player
-            foreach (Item passive in itemManager.passives)
+            foreach (string passive in passiveSave)
             {
-                itemManager.AddPassive(passive.gameObject.name);
+                itemManager.AddPassive(passive);
             }
-            
-        } else
-        {
-            Debug.LogWarning("Passive Save file not found.");
+
+            stream.Close();
+
+            Debug.Log("Loaded all passives!");
+
         }
-        */
+        else
+        {
+            Debug.LogError("Passive Save file not found.");
+        }
+
+        Debug.Log("Loaded all saves!");
     }
 }
