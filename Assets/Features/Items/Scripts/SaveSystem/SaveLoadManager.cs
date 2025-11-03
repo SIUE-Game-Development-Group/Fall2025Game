@@ -4,11 +4,6 @@ using System.IO;
 using System.Collections.Generic;
 using Core.Scripts.Game;
 
-/*
-    TODO:
-        - Remove already equipped passives after loading new ones in from save
-*/
-
 public class SaveLoadManager : MonoBehaviour
 {
     private string defaultPath;
@@ -85,14 +80,14 @@ public class SaveLoadManager : MonoBehaviour
         SavePassiveNames(itemManager.passives);
 
         // Ensure the data we're saving is not null
-        if (itemSave == null)
+        if (itemSave == null || itemSave.Count == 0)
         {
-            Debug.LogError("SaveLoadManager: Could not save because itemSave is null!");
+            Debug.LogError("SaveLoadManager: Could not save because itemSave is null or empty!");
             return;
         }
-        if (passiveSave == null)
+        if (passiveSave == null || passiveSave.Count == 0)
         {
-            Debug.LogWarning("SaveLoadManager: Could not save passives because passiveSave is null!");
+            Debug.LogWarning("SaveLoadManager: Could not save passives because passiveSave is null or empty!");
         }
 
         // Write out encrypted files
@@ -146,9 +141,14 @@ public class SaveLoadManager : MonoBehaviour
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(passiveSavePath, FileMode.Open);
             passiveSave = formatter.Deserialize(stream) as List<string>;
-
+            
+            // Destroy all passives player holds (overwriting with new ones)
+            foreach (Item passive in itemManager.passives)
+            {
+                itemManager.DestroyPassive(passive.name);
+            }
+            
             itemManager.passives.Clear();
-
             // Load saved passives onto player
             foreach (string passive in passiveSave)
             {

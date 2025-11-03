@@ -7,16 +7,7 @@ using Object = UnityEngine.Object;
 
 public class ItemManager : MonoBehaviour
 {
-
-    /* TODO:
-            1. Make function to swap passives and update the Inventory List accordingly
-            2. Rework inventory system to support multiple weapons and passives rather than set slots
-                - Create different lists for weapons/coins, and collected passives/active items
-     */
-
-
     // What the player currently holds
-
     public List<Item> inventory;
     public List<Item> passives;
 
@@ -55,9 +46,8 @@ public class ItemManager : MonoBehaviour
         SwapItem(RandomGenerateItem().name);
         
         // Give player passives on start (REMOVE WHEN DONE TESTING)
-        AddPassive("BloodHoundTotem");
         AddPassive("CrystalLeech");
-
+        AddPassive("BloodHoundTotem");
     }
     
     // Scan all files in weapon directory and set id = (weapons path)
@@ -104,7 +94,7 @@ public class ItemManager : MonoBehaviour
         Item passiveItem = FindPassiveByName(itemName);
         if (passiveItem == null)
         {
-            Debug.LogError("ItemManager - AddPassive: Item not found!");
+            Debug.LogError($"ItemManager - AddPassive: {itemName} not found!");
             return;
         }
 
@@ -120,6 +110,19 @@ public class ItemManager : MonoBehaviour
         passives.Add(passiveItem);
     }
 
+    public void DestroyPassive(string itemName)
+    {
+        GameObject passive = GameObject.Find(itemName);
+        if (passive == null)
+        {
+            Debug.LogError("ItemManager - DestroyPassive: Item not found!");
+            return;
+        }
+        Destroy(passive);
+        Debug.Log("DestroyPassive: destroyed " + itemName);
+        
+    }
+    
     public void SwapItem(string itemName)
     {
         PlayerAttack playerAttackScript = this.gameObject.GetComponent<PlayerAttack>();
@@ -132,7 +135,6 @@ public class ItemManager : MonoBehaviour
             return;
         }
         
-
         // Load item prefab into unity scene
         swapItemPrefab = Resources.Load<GameObject>("Weapons/" + itemSwap.name);
         if (swapItemPrefab != null)
@@ -143,8 +145,7 @@ public class ItemManager : MonoBehaviour
             // Update inventory weapon slot (Weapon slot only in slot 0)
             inventory[0] = itemSwap;
             
-        }
-        else
+        } else
         {
             Debug.LogWarning("Failed to load prefab from path: " + itemSwap.id);
             return;
@@ -168,7 +169,6 @@ public class ItemManager : MonoBehaviour
             // Run totem damage increase function with newly equipped weapon
             damageTotemInstance.GetComponent<Attack_Damage>().IncreaseDamageOfWeapon(playerAttackScript.equippedWeapon);
         }
-
     }
 
     public Item RandomGenerateItem()
