@@ -28,8 +28,8 @@ public class ItemManager : MonoBehaviour
         passives = new List<Item>();
 
         // Load all items into memory
-        LoadItems();
-        LoadPassives();
+        LoadItemsMem();
+        LoadPassivesMem();
 
         // If damage totem equipped, buff damage
         GameObject damageTotemInstance = GameObject.Find("DamageTotem");
@@ -46,12 +46,12 @@ public class ItemManager : MonoBehaviour
         SwapItem(RandomGenerateItem().name);
         
         // Give player passives on start (REMOVE WHEN DONE TESTING)
-        AddPassive("CrystalLeech");
-        AddPassive("BloodHoundTotem");
+        //AddPassive("CrystalLeech");
+        //AddPassive("BloodHoundTotem");
     }
     
     // Scan all files in weapon directory and set id = (weapons path)
-    public void LoadItems()
+    public void LoadItemsMem()
     {
         var allAssets = Resources.LoadAll("Weapons", typeof(Item));
 
@@ -69,7 +69,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public void LoadPassives()
+    public void LoadPassivesMem()
     {
         var allAssets = Resources.LoadAll("Passives", typeof(Item));
 
