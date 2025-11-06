@@ -14,11 +14,12 @@ public class SaveLoadManager : MonoBehaviour
     private string weaponSavePath;
     private string passiveSavePath;
 
-    [SerializeField] List<string> itemSave = new List<string>();
-    [SerializeField] List<string> passiveSave = new List<string>();
+    [HideInInspector] [SerializeField] private List<string> itemSave = new List<string>();
+    [HideInInspector] [SerializeField] private List<string> passiveSave = new List<string>();
 
     public void Start()
     {
+        
         defaultPath = Application.persistentDataPath;
         
         passiveSaveName = "/passiveSave.dat";
@@ -59,7 +60,6 @@ public class SaveLoadManager : MonoBehaviour
             }
         }
         return true;
-
     }
 
     public void Save()
