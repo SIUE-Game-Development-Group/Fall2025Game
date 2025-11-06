@@ -43,12 +43,26 @@ public class ItemManager : MonoBehaviour
         }
 
         // Start with random item
-        SwapItem(RandomGenerateItem().name);
+        //SwapItem(RandomGenerateItem().name);
         
         // Give player passives on start (REMOVE WHEN DONE TESTING)
         //AddPassive("CrystalLeech");
         //AddPassive("BloodHoundTotem");
     }
+    
+    // Get how much an item's worth by name of item
+    public int ItemGetWorth(string name)
+    {
+        Item weapon = FindItemByName(name);
+        Item passive = FindItemByName(name);
+
+        if (weapon != null) return weapon.cost;
+        if (passive != null) return passive.cost;
+        
+        Debug.LogError($"Couldn't find item by name: {name} returning coin worth as 999!");
+        return -1;
+    }
+    
     
     // Scan all files in weapon directory and set id = (weapons path)
     public void LoadItemsMem()
@@ -139,7 +153,7 @@ public class ItemManager : MonoBehaviour
         swapItemPrefab = Resources.Load<GameObject>("Weapons/" + itemSwap.name);
         if (swapItemPrefab != null)
         {
-            Debug.Log("Successfully loaded swap item");
+            Debug.Log($"Successfully loaded swap item {itemSwap.name}");
 
             playerAttackScript.EquipWeaponFromPrefab(swapItemPrefab.GetComponent<Weapon>());
             // Update inventory weapon slot (Weapon slot only in slot 0)

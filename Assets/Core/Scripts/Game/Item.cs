@@ -23,14 +23,16 @@ namespace Core.Scripts.Game
         [SerializeField] public Rarity rarity;
         [SerializeField] public Sprite icon;
         [SerializeField] public int quantity;
+        [SerializeField] public int cost;
 
-        public Item(string itemId, string itemDisplayName, string itemDescription, Rarity itemRarity, int itemQuantity)
+        public Item(string itemId, string itemDisplayName, string itemDescription, Rarity itemRarity, int itemQuantity, int cost)
         {
             this.id = itemId;
             this.displayName = itemDisplayName;
             this.description = itemDescription;
             this.rarity = itemRarity;
             this.quantity = itemQuantity;
+            this.cost = cost;
         }
 
         public Item()

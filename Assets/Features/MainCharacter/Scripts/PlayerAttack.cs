@@ -29,7 +29,7 @@ namespace Features.MainCharacter.Scripts
             if (equippedWeapon)
             {
                 var swappedDroppedWeapon = Instantiate(droppedWeaponPrefab).GetComponent<DroppedWeapon>();
-                swappedDroppedWeapon.weapon = equippedWeapon;
+                swappedDroppedWeapon.weapon = Instantiate(equippedWeapon);
                 swappedDroppedWeapon.UpdateIcon();
                 Destroy(equippedWeapon.gameObject);
 
