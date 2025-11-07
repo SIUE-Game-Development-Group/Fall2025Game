@@ -43,7 +43,9 @@ public class ItemManager : MonoBehaviour
         }
 
         // Start with random item
-        //SwapItem(RandomGenerateItem().name);
+        SwapItem(RandomGenerateItem().name);
+        //SwapItem(FindItemByName("Wide_Sword").name);
+        
         
         // Give player passives on start (REMOVE WHEN DONE TESTING)
         //AddPassive("CrystalLeech");
