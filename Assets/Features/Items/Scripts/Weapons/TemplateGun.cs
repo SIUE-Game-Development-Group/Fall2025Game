@@ -6,7 +6,8 @@ public class TemplateGun : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
-    
+    GameObject bullet;
+    private Vector2 direction;
 
     void shoot()
     {
@@ -20,24 +21,23 @@ public class TemplateGun : MonoBehaviour
         {
             Attack();
         }
-    }
-
-    void Attack()
-    {
-        GameObject bullet;
-        bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-
+        
         // Get direction to target
         var mousePos = InputManager.Instance.MousePosition;
         mousePos.z = 10f;
         var mousePosWorld = Camera.main.ScreenToWorldPoint(mousePos);
         mousePosWorld.z = 0;
-        Vector2 direction = mousePosWorld - transform.position;
+        direction = mousePosWorld - this.gameObject.transform.position;
 
         // Calculate the angle in degrees
         transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
         direction.Normalize();
+        
+    }
 
+    void Attack()
+    {
+        bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
     }
 }
