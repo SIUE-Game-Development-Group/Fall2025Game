@@ -33,7 +33,7 @@ public class MapGenerator : MonoBehaviour
     {
         minRooms = 7;
         maxRooms = 13;
-        cellSize = 1.5f;
+        cellSize = 13f;
         spawnedCells = new();
 
         SetupDungeon();
