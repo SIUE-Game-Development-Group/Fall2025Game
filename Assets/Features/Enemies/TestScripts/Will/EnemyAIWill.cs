@@ -13,6 +13,7 @@ public class EnemyAIWill : Enemy
     float projectileTickRate;
     private Rigidbody2D rb;
     public Vector3 projectileDirection;
+    private int projectileId;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [SerializeField] private List<Sprite> sprites;
@@ -41,19 +42,28 @@ public class EnemyAIWill : Enemy
         if (tickRate < 1.5f)
         {
             Movement();
+            projectileTickRate = 0f;
         }
-        else if (tickRate < 2f)
+        else if (tickRate < 1.75f)
         {
             Move(Vector2.zero);
             
         }
+        else if (tickRate < 4f)
+        {
+            
+            if (projectileTickRate < 0.5f)
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    Attack(i);
+                }
+                projectileTickRate = 1f;
+            }
+        }
         else if (tickRate < 4.5f)
         {
-            if (projectileTickRate > 0.5f)
-            {
-                Attack();
-                projectileTickRate = 0f;
-            }
+            Move(Vector2.zero);
         }
         else
         {
@@ -71,7 +81,7 @@ public class EnemyAIWill : Enemy
         // rb.linearVelocity = (direction * speed);
         Move(direction);
     }
-    void Attack()
+    void Attack(int projectileId)
     {
         GameObject projectile;
         projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
@@ -80,6 +90,8 @@ public class EnemyAIWill : Enemy
         projectileDirection.Normalize();
 
         projectile.GetComponent<Rigidbody2D>().linearVelocity = projectileDirection * projectileSpeed;
+
+        projectile.GetComponent<ProjectileCode>().SetId(projectileId);
 
     }
     Vector3 ProjectileDirection()
