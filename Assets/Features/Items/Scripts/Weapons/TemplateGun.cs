@@ -6,8 +6,11 @@ public class TemplateGun : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
+    [SerializeField] private float spreadAngle = 10f;
+    [SerializeField] private int projectileCount = 1;
     GameObject bullet;
     private Vector2 direction;
+    
 
     void shoot()
     {
@@ -37,7 +40,15 @@ public class TemplateGun : MonoBehaviour
 
     void Attack()
     {
-        bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
+        for (int i = 0; i < projectileCount; i++)
+        {
+            float randomSpread = Random.Range(-spreadAngle / 2f, spreadAngle / 2f);
+
+            Quaternion bulletRotation = transform.rotation * Quaternion.Euler(0, 0, randomSpread);
+
+            bullet = Instantiate(bulletPrefab, transform.position, bulletRotation);
+
+            bullet.GetComponent<Rigidbody2D>().linearVelocity = bullet.transform.up * bulletSpeed;
+        }
     }
 }
